@@ -1,22 +1,19 @@
 import json
 from unicodedata import name
 import yfinance as yf
-from forex_python.converter import CurrencyRates
+from currency_converter import CurrencyConverter
 import sys
 
-# exit with error msg
 def Error_Exit(msg):
     input(msg)
     exit(1)
 
-# use forex_python module to convert currency
 def ConvertCurrency(amount, from_curr, to_curr):
     final_amt=0.0
-    cr = CurrencyRates()
-    final_amt = cr.convert(from_curr, to_curr, amount)
+    c = CurrencyConverter()
+    final_amt = c.convert(amount, from_curr, to_curr)
     return round(final_amt, 2)
 
-# get stp for a symbol, return a tuple of price,curr
 def GetStockPrice(stockname):
     data=yf.Ticker(stockname)
     if not 'symbol' in data.info.keys():
@@ -25,11 +22,14 @@ def GetStockPrice(stockname):
     price = data.info['open']
     return price, currency
 
-# get total stock value
 def GetStockValue(symbol, units):
-    stock_price = GetStockPrice(symbol)
-    stock_price_inr = ConvertCurrency(stock_price[0], stock_price[1], 'INR')
-    return round(stock_price_inr * units, 2)
+    stock_price_inr = 0.0
+    amt, curr = GetStockPrice(symbol)
+    #convrt from curr to inr
+    if curr != 'INR':
+        stock_price_inr = ConvertCurrency(amt, curr, 'INR')
+    stock_price_inr = amt * units
+    return round(stock_price_inr, 2)
 
 if __name__ == "__main__":
     json_file = 'MyStockData.json'
@@ -45,8 +45,11 @@ if __name__ == "__main__":
         for stock in data[stock_list]:
             total_investment_stocks.append(stock)
 
+    total_valuation = 0.0
     for stock_info in total_investment_stocks:
         for symbol, units in stock_info.items():
-            print ('Stock: %s, Units: %s, Total Value(INR): %s' %(symbol, units, GetStockValue(symbol, units)))
-        
+            val = GetStockValue(symbol, units)
+            print ('Stock: %s, Units: %s, Total Value(INR): %s' %(symbol, units, val))
+            total_valuation += val
     
+    print ('Total valuation: %s' %total_valuation)
