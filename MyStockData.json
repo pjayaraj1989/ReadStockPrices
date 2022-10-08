@@ -1,15 +1,31 @@
 {
     "NSE":[
-        {"TCS":    5,
-         "INFY":     10
+        {"BEL.NS":    100,
+         "BPCL.NS":   100,
+         "CHENNPETRO.NS":    100,
+         "FORTIS.NS":          100,
+         "GOLDBEES.NS":        500,
+         "ONGC.NS":            100,
+         "TIMETECHNO.NS":      100,
+         "AVANTIFEED.NS":       0,
+         "HDFCBANK.NS":         5,
+         "ITC.NS":              0,
+         "OROSMITHS.BO":         100,
+         "IDEA.NS":             110,
+         "FEDERALBNK.NS":       100,
+         "YESBANK.NS":          1000,
+         "MANAPPURAM.NS":       100,
+         "IOC.NS":              100
         }
     ],
     "NASDAQ":[
-        {"AMD": 400,
-        "INTC": 500
-    }
+        {
+            "AMD": 10
+        }
     ],
-    "Others":[
-
+    "MF":[
+        {
+            "Axis Bluechip Fund - Direct Plan - Growth":    1000
+        }
     ]
 }
